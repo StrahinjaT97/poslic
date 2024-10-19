@@ -48,11 +48,11 @@ try:
 
     seleniumwire_options = {
         'request_storage': 'memory',
-        'ca_key': f'{os.getcwd()}\\ca.key',
-        'ca_cert': f'{os.getcwd()}\\ca.crt'
+        #'ca_key': f'{os.getcwd()}\\ca.key',
+        #'ca_cert': f'{os.getcwd()}\\ca.crt'
     }
 
-    os.system(".\\addCertsToChrome.bat " + ".\\ca.crt")
+    #os.system(".\\addCertsToChrome.bat " + ".\\ca.crt")
 
     driver = webdriver.Chrome(options=options, seleniumwire_options=seleniumwire_options)
 
@@ -81,14 +81,15 @@ try:
             away = r.find_element(By.XPATH, ".//div[4]/span").text
             video = False
             try:
-                r.find_element(By.XPATH, ".//svg[contains(@data-icon, 'cloud-upload')]")
+                r.find_element(By.XPATH, ".//span[contains(@class, 'StatusIcon-module_iconWrapper_ji6XZ')]")
                 video = True
             except:
-                try:
-                    r.find_element(By.XPATH, ".//svg[contains(@data-icon, 'video')]")
-                    video = True
-                except:
-                    video = False
+                #try:
+                    #r.find_element(By.XPATH, ".//svg[contains(@class, 'video')]")
+                    #video = True
+                #except:
+                    #video = false
+                video = False
 
             game = Game(competition, date, home, away, video)
             rows_set.add(game)
