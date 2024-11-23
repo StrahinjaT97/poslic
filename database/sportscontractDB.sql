@@ -2,32 +2,25 @@ CREATE DATABASE sportcontract;
 
 CREATE TABLE LIGA (
   LigaId int PRIMARY KEY AUTO_INCREMENT,
-  Name varchar(255) NOT NULL,
-  BucketName varchar(255) NOT NULL,
-  FormatNazivFajla varchar(255) NOT NULL,
-  SajtId int NOT NULL,
-  UrlGuid varchar(255) NOT NULL
+  ImeNaDashboardu varchar(255) NOT NULL,
+  ImeZaUpload varchar(255) NOT NULL,
+  BucketName varchar(255) NOT NULL
 );
 
 CREATE TABLE DIVIZIJA (
   DivizijaId int PRIMARY KEY AUTO_INCREMENT,
   LigaId int NOT NULL,
-  SajtId int NOT NULL,
-  UrlGuid varchar(255) NOT NULL
+  BucketName varchar(255)
 );
 
-CREATE TABLE TIM (
-  TimId int PRIMARY KEY AUTO_INCREMENT,
-  SiteName varchar(255),
-  SajtId int NOT NULL,
-  FileName varchar(255) NOT NULL
-);
 
 CREATE TABLE SAJT(
   SajtId int PRIMARY KEY AUTO_INCREMENT,
-  Url varchar(255) NOT NULL
+  LigaId int NOT NULL,
+  Url varchar(255) NOT NULL,
+  Username varchar(255) NOT NULL,
+  Password varchar(255) NOT NULL
 );
-
 
 
 CREATE TABLE DULTask(
@@ -38,29 +31,26 @@ CREATE TABLE DULTask(
   TaskEndDateAndTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   LigaId int,
   DivizijaId int,
-  HomeTeamId int,
-  AwayTeamId int,
+  HomeTeamId varchar(255),
+  AwayTeamId varchar(255),
   GameDateAndTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
 );
 
-ALTER TABLE LIGA
-ADD FOREIGN KEY (SajtId) REFERENCES sajt(SajtId);
+
+CREATE TABLE DULTaskStatus(
+	DULTaskStatusId int PRIMARY KEY AUTO_INCREMENT,
+  Name ENUM('Not Started', 'Working', 'Success', 'Failure', 'File exists in Bucket') NOT NULL
+);
+
 
 ALTER TABLE DIVIZIJA
-ADD FOREIGN KEY (LigaId) REFERENCES liga(LigaId),
-ADD FOREIGN KEY (SajtId) REFERENCES sajt(SajtId);
+ADD FOREIGN KEY (LigaId) REFERENCES liga(LigaId);
 
-ALTER TABLE TIM
-ADD FOREIGN KEY (SajtId) REFERENCES sajt(SajtId);
 
 ALTER TABLE DULTASK
 ADD FOREIGN KEY (LigaId) REFERENCES LIGA(LigaId);
 ALTER TABLE DULTASK
 ADD FOREIGN KEY (DivizijaId) REFERENCES DIVIZIJA(DivizijaId);
-ALTER TABLE DULTASK
-ADD FOREIGN KEY (HomeTeamId) REFERENCES TIM(TimId);
-ALTER TABLE DULTASK
-ADD FOREIGN KEY (AwayTeamId) REFERENCES TIM(TimId);
 
 
 
