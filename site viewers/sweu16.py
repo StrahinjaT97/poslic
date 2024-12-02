@@ -8,19 +8,21 @@ import time
 import os
 import sys
 
-#arg 1 - site url
-#arg 2 - username
-#arg 3 - password
+#arg 1 - webdriver location
+#arg 2 - site url
+#arg 3 - username
+#arg 4 - password
 
 try:
-    cService = webdriver.ChromeService(executable_path="..\\res\\chromedriver.exe", log_output='NUL')
+    #driver_path = os.getcwd() + "..\\res\\chromedriver.exe"
+    cService = webdriver.ChromeService(executable_path=sys.argv[1], log_output='NUL')
 
 
     driver = webdriver.Chrome(service=cService)
     driver.maximize_window()
-    wdwait = WebDriverWait(driver, 5) #TODO: Vratiti na neko bolje verem
+    wdwait = WebDriverWait(driver, 15) #TODO: Vratiti na neko bolje verem
 
-    driver.get(sys.argv[1])
+    driver.get(sys.argv[2])
 
     #try and accept cookies
     #TODO: promeniti iz xpath u nesto pametnije
@@ -37,8 +39,8 @@ try:
     driver.find_element(By.XPATH, "/html/body/app-root-play-site/ion-app/ion-nav/app-view/div/ion-header/ion-toolbar/ion-buttons[2]/ion-button[1]").click()
     wdwait.until(EC.presence_of_element_located((By.ID, "login-email")))
     wdwait.until(EC.element_to_be_clickable((By.ID, "login-email")))
-    driver.find_element(By.ID, "login-email").send_keys(sys.argv[2])
-    driver.find_element(By.ID, "login-password").send_keys(sys.argv[3])
+    driver.find_element(By.ID, "login-email").send_keys(sys.argv[3])
+    driver.find_element(By.ID, "login-password").send_keys(sys.argv[4])
     driver.find_element(By.ID, "login-password").send_keys(Keys.ENTER)
 
     #fetch video links
